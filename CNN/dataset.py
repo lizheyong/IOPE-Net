@@ -1,5 +1,5 @@
 import torch
-import cv2
+# import cv2
 import os
 import glob
 from torch.utils.data import Dataset
@@ -14,8 +14,8 @@ class HSI_Loader(Dataset):
 
     def __getitem__(self, index):
         # 根据index读取pixel的光谱曲线
-        pixel_curve = torch.tensor(self.all_curve[index, :])
-        label = torch.tensor(self.all_curve[index, :])
+        pixel_curve = torch.tensor(self.all_curve[index, 9:129])
+        label = torch.tensor(self.all_curve[index, 9:129])
 
         return pixel_curve, label
 

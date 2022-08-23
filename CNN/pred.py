@@ -20,7 +20,7 @@ def pred_net(net0, net1, net2, device, npyfile, batch_size=1024):
     HSI_dataset = HSI_Loader(npyfile)
     train_loader = torch.utils.data.DataLoader(dataset=HSI_dataset,
                                                batch_size=batch_size,
-                                               shuffle=True)
+                                               shuffle=False)
     criterion = nn.MSELoss()
     # 测试模式
     # 加载模型参数
@@ -30,6 +30,8 @@ def pred_net(net0, net1, net2, device, npyfile, batch_size=1024):
     net0.eval()
     net1.eval()
     net2.eval()
+    pred_loss = 0
+    n = 0
     for curve, label in train_loader:
         # 将数据拷贝到device中
         curve = curve.reshape(len(curve), 1, -1).to(device=device, dtype=torch.float32)
@@ -42,7 +44,7 @@ def pred_net(net0, net1, net2, device, npyfile, batch_size=1024):
         r = (0.084 + 0.170 * u) * u
         r = torch.squeeze(r)
         # 计算loss
-        pltcurve = 12 # 要看哪条曲线
+        pltcurve = 1 # 要看哪条曲线
 
         print(f'r:{r[pltcurve,:]}')
         print(f'a:{a[pltcurve,0,:]}')
@@ -72,27 +74,13 @@ def pred_net(net0, net1, net2, device, npyfile, batch_size=1024):
         print(f'mean_REP:{mean_REP.item()}')
 
         # 画图
-        wavelength = [398.10,401.30,404.50,407.60,410.80,414.00,417.20,420.40,423.60,426.80,430.00,
-                          433.30,436.50,439.70,442.90,446.10,449.40,452.60,455.80,459.10,462.30,465.50,
-                          468.80,472.00,475.30,478.50,481.80,485.10,488.30,491.60,494.90,498.10,501.40,
-                          504.70,508.00,511.30,514.60,517.80,521.10,524.40,527.70,531.00,534.40,537.70,
-                          541.00,544.30,547.60,550.90,554.30,557.60,560.90,564.30,567.60,570.90,574.30,
-                          577.60,581.00,584.30,587.70,591.10,594.40,597.80,601.20,604.50,607.90,611.30,
-                          614.70,618.10,621.40,624.80,628.20,631.60,635.00,638.40,641.80,645.30,648.70,
-                          652.10,655.50,658.90,662.40,665.80,669.20,672.70,676.10,679.50,683.00,686.40,
-                          689.90,693.30,696.80,700.20,703.70,707.20,710.60,714.10,717.60,721.10,724.60,
-                          728.00,731.50,735.00,738.50,742.00,745.50,749.00,752.50,756.00,759.50,763.10,
-                          766.60,770.10,773.60,777.10,780.70,784.20,787.80,791.30,794.80,798.40,801.90,
-                          805.50,809.00,812.60,816.20,819.70,823.30,826.90,830.40,834.00,837.60,841.20,
-                          844.80,848.40,852.00,855.60,859.20,862.80,866.40,870.00,873.60,877.20,880.80,
-                          884.40,888.10,891.70,895.30,899.00,902.60,906.20,909.90,913.50,917.20,920.80,
-                          924.50,928.10,931.80,935.50,939.10,942.80,946.50,950.20,953.80,957.50,961.20,
-                          964.90,968.60,972.30,976.00,979.70,983.40,987.10,990.80,994.50,998.20,1002.00]
+        wavelength = np.load(r"C:\Users\423\Desktop\铁测试\wavelength.npy")
         # 重构曲线和真实曲线
         plt.figure()
-        plt.plot(wavelength, torch.squeeze(r[pltcurve,:]).detach().cpu().numpy(),
+
+        plt.plot(wavelength, gaussian_filter1d(torch.squeeze(r[pltcurve,:]).detach().cpu().numpy(),sigma=5),
                  label='reconstruct', color='r', marker='o', markersize=3)
-        plt.plot(wavelength, torch.squeeze(label[pltcurve,:]).detach().cpu().numpy(),
+        plt.plot(wavelength, gaussian_filter1d(torch.squeeze(label[pltcurve,:]).detach().cpu().numpy(),sigma=5),
                  label='real', color='b', marker='o', markersize=3)
         plt.xlabel('band')
         plt.ylabel('reflect value')
@@ -104,13 +92,14 @@ def pred_net(net0, net1, net2, device, npyfile, batch_size=1024):
                  label='a', color='r', marker='o', markersize=3)
         b_smoothed = gaussian_filter1d(torch.squeeze(b[pltcurve,:]).detach().cpu().numpy(), sigma=5)
         plt.plot(wavelength, b_smoothed,
-                 label='b', color='b', marker='o', markersize=3)
+                 label='bb', color='b', marker='o', markersize=3)
         plt.xlabel('band')
         plt.ylabel('value')
         plt.legend()
 
         plt.show()
         break
+
 
 
 
@@ -126,6 +115,5 @@ if __name__ == "__main__":
     net0.to(device=device)
     net1.to(device=device)
     net2.to(device=device)
-    # 指定训练集地址，开始训练
-    data_path = 'data/all_curve.npy'
+    data_path = r"C:\Users\423\Desktop\铁测试\2.2m\水100x100\2.2m_water.npy"
     pred_net(net0, net1, net2, device, data_path)

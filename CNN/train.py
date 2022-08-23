@@ -10,7 +10,7 @@ import torch.nn.functional as F
 
 sys.stdout = Logger()
 
-def train_net(net0, net1, net2, device, npyfile, epochs=2000, batch_size=1024, lr=0.00001):
+def train_net(net0, net1, net2, device, npyfile, epochs=500, batch_size=64, lr=0.00001):
     # 加载训练集
     HSI_dataset = HSI_Loader(npyfile)
     train_loader = torch.utils.data.DataLoader(dataset=HSI_dataset,
@@ -94,5 +94,5 @@ if __name__ == "__main__":
     net2.to(device=device)
 
     # 指定训练集地址，开始训练
-    data_path = 'data/all_curve.npy'
+    data_path = r"C:\Users\423\Desktop\铁测试\2.2m\水100x100\2.2m_water.npy"
     train_net(net0, net1, net2, device, data_path)
