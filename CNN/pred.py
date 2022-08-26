@@ -44,7 +44,7 @@ def pred_net(net0, net1, net2, device, npyfile, batch_size=1024):
         r = (0.084 + 0.170 * u) * u
         r = torch.squeeze(r)
         # 计算loss
-        pltcurve = 1 # 要看哪条曲线
+        pltcurve = 100 # 要看哪条曲线
 
         print(f'r:{r[pltcurve,:]}')
         print(f'a:{a[pltcurve,0,:]}')
@@ -74,7 +74,7 @@ def pred_net(net0, net1, net2, device, npyfile, batch_size=1024):
         print(f'mean_REP:{mean_REP.item()}')
 
         # 画图
-        wavelength = np.load(r"C:\Users\423\Desktop\铁测试\wavelength.npy")
+        wavelength = np.load(r"C:\Users\zheyong\Desktop\铁测试\wavelength.npy")
         # 重构曲线和真实曲线
         plt.figure()
 
@@ -115,5 +115,5 @@ if __name__ == "__main__":
     net0.to(device=device)
     net1.to(device=device)
     net2.to(device=device)
-    data_path = r"C:\Users\423\Desktop\铁测试\2.2m\水100x100\2.2m_water.npy"
+    data_path = r"C:\Users\zheyong\Desktop\橡胶测试\0.9m\水100x100\0.9m_water.npy"
     pred_net(net0, net1, net2, device, data_path)
