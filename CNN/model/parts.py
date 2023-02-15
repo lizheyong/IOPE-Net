@@ -1,25 +1,21 @@
-import torch
 import torch.nn as nn
-import torch.nn.functional as F
+
 
 class Conv(nn.Module):
     """(Conv => BN => ReLU )"""
-
     def __init__(self, in_channels, out_channels):
         super().__init__()
         self.conv = nn.Sequential(
             nn.Conv1d(in_channels, out_channels, kernel_size=3, padding=1),
             nn.BatchNorm1d(out_channels),
             nn.ReLU(inplace=True)
-
         )
 
     def forward(self, x):
         return self.conv(x)
 
 class Down(nn.Module):
-    """Pool => CONV"""
-
+    """Pool => Conv"""
     def __init__(self, in_channels, out_channels):
         super().__init__()
         self.maxpool_conv = nn.Sequential(
@@ -32,10 +28,10 @@ class Down(nn.Module):
 
 class Up(nn.Module):
     """ConvTranspose => BN => Relu"""
-
     def __init__(self, in_channels, out_channels):
         super().__init__()
         self.up_conv = nn.Sequential(
+            # I set these parameters just for it can run
             nn.ConvTranspose1d(in_channels, out_channels, kernel_size=3, stride=2, padding=1, output_padding=1, dilation=1),
             nn.BatchNorm1d(out_channels),
             nn.ReLU(inplace=True)
