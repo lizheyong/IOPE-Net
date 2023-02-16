@@ -29,7 +29,7 @@ def train_net(net0, net1, net2, device, npyfile, epochs, batch_size, lr):
             optimizer1.zero_grad()
             optimizer2.zero_grad()
             # Load data and label to device, curve add 1 dim so that it can feed into the net
-            curve = curve.reshape(len(curve), 1, -1).to(device=device, dtype=torch.float32)
+            curve = curve.unsqueeze(1).to(device=device, dtype=torch.float32)
             label = label.to(device=device, dtype=torch.float32)
             encode_out = net0(curve)
             a = net1(encode_out)

@@ -26,8 +26,5 @@ if __name__ == "__main__":
     print("number of loaded pixels：", len(HSI_dataset))
     train_loader = torch.utils.data.DataLoader(dataset=HSI_dataset, batch_size=1024, shuffle=True)
     for curve, label in train_loader:
-        # get the length of this batch, especially for the last batch, may less than 'batch_size'
-        len_of_this_batch = curve.shape[0]
-        # before input the Net, it should add one dim(channel) after dim(batch)
-        print(curve.reshape(len_of_this_batch, 1, -1).shape)
+        print(curve = curve.shape)
         break

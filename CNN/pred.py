@@ -22,7 +22,7 @@ def pred_net(net0, net1, net2, device, npyfile, batch_size):
     net1.eval()
     net2.eval()
     for curve, label in train_loader:
-        curve = curve.reshape(len(curve), 1, -1).to(device=device, dtype=torch.float32)
+        curve = curve.unsqueeze(1).to(device=device, dtype=torch.float32)
         label = label.to(device=device, dtype=torch.float32)
         encode_out = net0(curve)
         a = net1(encode_out)
