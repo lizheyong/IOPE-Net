@@ -5,7 +5,7 @@
 
 <div align=center><img src="https://github.com/lijinchao98/IOPE_Net/blob/main/fig.jpg" width="600px" alt="IOPE-Net"></div>
 
-* Code is written with reference to [2021, Jiaohao Qi, A Self-Improving Framework for Joint Depth Estimation and Underwater Target Detection from Hyperspectral Imagery](https://doi.org/10.3390/rs13091721). 
+* Code is written with reference to [2021, Jiaohao Qi, Hybrid Sequence Networks for Unsupervised Water Properties Estimation From Hyperspectral Imagery](https://doi.org/10.1109/JSTARS.2021.3068727). 
 * The article proposes a hybrid sequence CNN+RNN, but in my implementation, CNN alone is sufficient and more mainly faster than adding RNN, so I only use CNN in my subsequent work.
 * For the Loss function, here only use MSE Loss and SA Loss. HMS Loss was not used, yes, because I was too lazy to add it.
 * Code implementation may have some imperfections, please feel free to submit issues.*
