@@ -23,7 +23,7 @@ def open_file(dataset):
 
 if __name__ == "__main__":
 
-    file = fr"D:\项目_高光谱水下目标检测\1_高光谱水下目标检测_总报告\Datasets\selected_data\iron\0.1m\水100x100\0.1m_water.hdr"
+    file = fr"xxxxx\xxxx_water.hdr"
     name, _ = os.path.splitext(file)
     # type(HSI_image) is 'ImageArray' (Width, Height, Bands)
     HSI = open_file(file)
