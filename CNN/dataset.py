@@ -26,5 +26,5 @@ if __name__ == "__main__":
     print("number of loaded pixels：", len(HSI_dataset))
     train_loader = torch.utils.data.DataLoader(dataset=HSI_dataset, batch_size=1024, shuffle=True)
     for curve, label in train_loader:
-        print(curve = curve.shape)
+        print(curve.shape)
         break
